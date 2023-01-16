@@ -1,0 +1,21 @@
+
+parameters:
+    firebase.private_key: '%env(FIREBASE_PRIVATE_KEY)%'
+    firebase.client_email: '%env(FIREBASE_CLIENT_EMAIL)%'
+    firebase.project_id: '%env(FIREBASE_PROJECT_ID)%'
+
+services:
+    # Firebase Auth
+    firebase.auth:
+        class: Firebase\Auth\FirebaseAuth
+        arguments: ['@firebase.app']
+
+    # Firestore
+    firebase.firestore:
+        class: Firebase\Firestore\Firestore
+        arguments: ['@firebase.app']
+
+    # Firebase Storage
+    firebase.storage:
+        class: Firebase\Storage\Storage
+        arguments: ['@firebase.app']

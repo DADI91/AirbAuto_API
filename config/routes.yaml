@@ -1,0 +1,8 @@
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+
+firebase_auth:
+    resource: '../src/Controller/FirebaseAuthController.php'
+    type:     annotation
+    prefix:   /api/v1/auth
