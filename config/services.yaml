@@ -1,14 +1,5 @@
-# This file is the entry point to configure your own services.
-# Files in the packages/ subdirectory configure your dependencies.
-
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
-
-imports:
-    - { resource: 'config/packages/firebase.yaml' }
-
 parameters:
-
+    firebase_credentials_file: '%env(GOOGLE_APPLICATION_CREDENTIALS)%'
 
 services:
     # default configuration for services in *this* file
@@ -25,17 +16,9 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-
-    # Firebase
+    # Firebase client service
+    App\Services\FirebaseService: 
+        arguments: ['@Kreait\Firebase\Factory']
+    
     Kreait\Firebase\Factory:
-        arguments:
-            - '%env(resolve:FIREBASE_PROJECT_ID)%'
-            - '%env(resolve:FIREBASE_API_KEY)%'
-    Kreait\Firebase\Auth:
-        factory: ['@Kreait\Firebase\Factory', 'createAuth']
-    Kreait\Firebase\Firestore:
-        factory: ['@Kreait\Firebase\Factory', 'createFirestore']
-    Kreait\Firebase\Storage:
-        factory: ['@Kreait\Firebase\Factory', 'createStorage']
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+        arguments: ["%firebase_credentials_file%"]

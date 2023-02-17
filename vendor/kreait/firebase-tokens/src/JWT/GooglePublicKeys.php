@@ -11,14 +11,12 @@ use Kreait\Firebase\JWT\Action\FetchGooglePublicKeys\Handler;
 use Kreait\Firebase\JWT\Action\FetchGooglePublicKeys\WithGuzzle;
 use Kreait\Firebase\JWT\Contract\Expirable;
 use Kreait\Firebase\JWT\Contract\Keys;
-use StellaMaris\Clock\ClockInterface;
+use Psr\Clock\ClockInterface;
 
 final class GooglePublicKeys implements Keys
 {
-    private ClockInterface $clock;
-
-    private Handler $handler;
-
+    private readonly ClockInterface $clock;
+    private readonly Handler $handler;
     private ?Keys $keys = null;
 
     public function __construct(?Handler $handler = null, ?ClockInterface $clock = null)

@@ -6,40 +6,45 @@ namespace Kreait\Firebase;
 
 use GuzzleHttp\ClientInterface;
 use Kreait\Firebase\DynamicLink\CreateDynamicLink;
+use Kreait\Firebase\DynamicLink\CreateDynamicLink\GuzzleApiClientHandler;
 use Kreait\Firebase\DynamicLink\DynamicLinkStatistics;
 use Kreait\Firebase\DynamicLink\GetStatisticsForDynamicLink;
 use Kreait\Firebase\DynamicLink\ShortenLongDynamicLink;
 use Kreait\Firebase\Value\Url;
+use Stringable;
+
+use function is_array;
 
 /**
  * @internal
+ *
+ * @phpstan-import-type CreateDynamicLinkShape from CreateDynamicLink
+ * @phpstan-import-type ShortenLongDynamicLinkShape from ShortenLongDynamicLink
  */
 final class DynamicLinks implements Contract\DynamicLinks
 {
-    private ClientInterface $apiClient;
-    private ?string $defaultDynamicLinksDomain = null;
-
-    private function __construct(ClientInterface $apiClient)
-    {
-        $this->apiClient = $apiClient;
+    /**
+     * @param non-empty-string|null $defaultDynamicLinksDomain
+     */
+    private function __construct(
+        private readonly ?string $defaultDynamicLinksDomain,
+        private readonly ClientInterface $apiClient,
+    ) {
     }
 
     public static function withApiClient(ClientInterface $apiClient): self
     {
-        return new self($apiClient);
+        return new self(null, $apiClient);
     }
 
     /**
-     * @param \Stringable|string $dynamicLinksDomain
+     * @param Stringable|non-empty-string $dynamicLinksDomain
      */
-    public static function withApiClientAndDefaultDomain(ClientInterface $apiClient, $dynamicLinksDomain): self
+    public static function withApiClientAndDefaultDomain(ClientInterface $apiClient, Stringable|string $dynamicLinksDomain): self
     {
-        $domainUrl = (string) Url::fromValue((string) $dynamicLinksDomain);
+        $domainUrl = Url::fromString($dynamicLinksDomain)->value;
 
-        $service = self::withApiClient($apiClient);
-        $service->defaultDynamicLinksDomain = $domainUrl;
-
-        return $service;
+        return new self($domainUrl, $apiClient);
     }
 
     public function createUnguessableLink($url): DynamicLink
@@ -66,7 +71,7 @@ final class DynamicLinks implements Contract\DynamicLinks
             $action = $action->withUnguessableSuffix();
         }
 
-        return (new CreateDynamicLink\GuzzleApiClientHandler($this->apiClient))->handle($action);
+        return (new GuzzleApiClientHandler($this->apiClient))->handle($action);
     }
 
     public function shortenLongDynamicLink($longDynamicLinkOrAction, ?string $suffixType = null): DynamicLink
@@ -82,7 +87,11 @@ final class DynamicLinks implements Contract\DynamicLinks
         return (new ShortenLongDynamicLink\GuzzleApiClientHandler($this->apiClient))->handle($action);
     }
 
-    public function getStatistics($dynamicLinkOrAction, ?int $durationInDays = null): DynamicLinkStatistics
+    /**
+     * @param Stringable|non-empty-string|GetStatisticsForDynamicLink $dynamicLinkOrAction
+     * @param positive-int|null $durationInDays
+     */
+    public function getStatistics(Stringable|string|GetStatisticsForDynamicLink $dynamicLinkOrAction, ?int $durationInDays = null): DynamicLinkStatistics
     {
         $action = $this->ensureGetStatisticsAction($dynamicLinkOrAction);
 
@@ -94,11 +103,11 @@ final class DynamicLinks implements Contract\DynamicLinks
     }
 
     /**
-     * @param \Stringable|string|CreateDynamicLink|array<string, array<string, string>> $actionOrParametersOrUrl
+     * @param Stringable|non-empty-string|CreateDynamicLink|CreateDynamicLinkShape $actionOrParametersOrUrl
      */
-    private function ensureCreateAction($actionOrParametersOrUrl): CreateDynamicLink
+    private function ensureCreateAction(Stringable|string|CreateDynamicLink|array $actionOrParametersOrUrl): CreateDynamicLink
     {
-        if (\is_array($actionOrParametersOrUrl)) {
+        if (is_array($actionOrParametersOrUrl)) {
             return CreateDynamicLink::fromArray($actionOrParametersOrUrl);
         }
 
@@ -110,11 +119,11 @@ final class DynamicLinks implements Contract\DynamicLinks
     }
 
     /**
-     * @param \Stringable|string|ShortenLongDynamicLink|array<string, array<string, string>> $actionOrParametersOrUrl
+     * @param Stringable|non-empty-string|ShortenLongDynamicLink|ShortenLongDynamicLinkShape $actionOrParametersOrUrl
      */
-    private function ensureShortenAction($actionOrParametersOrUrl): ShortenLongDynamicLink
+    private function ensureShortenAction(Stringable|string|ShortenLongDynamicLink|array $actionOrParametersOrUrl): ShortenLongDynamicLink
     {
-        if (\is_array($actionOrParametersOrUrl)) {
+        if (is_array($actionOrParametersOrUrl)) {
             return ShortenLongDynamicLink::fromArray($actionOrParametersOrUrl);
         }
 
@@ -126,9 +135,9 @@ final class DynamicLinks implements Contract\DynamicLinks
     }
 
     /**
-     * @param \Stringable|string|GetStatisticsForDynamicLink $actionOrUrl
+     * @param Stringable|non-empty-string|GetStatisticsForDynamicLink $actionOrUrl
      */
-    private function ensureGetStatisticsAction($actionOrUrl): GetStatisticsForDynamicLink
+    private function ensureGetStatisticsAction(Stringable|string|GetStatisticsForDynamicLink $actionOrUrl): GetStatisticsForDynamicLink
     {
         if ($actionOrUrl instanceof GetStatisticsForDynamicLink) {
             return $actionOrUrl;

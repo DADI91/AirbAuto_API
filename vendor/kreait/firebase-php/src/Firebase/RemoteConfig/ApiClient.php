@@ -12,6 +12,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 use Throwable;
 
+use function array_filter;
+
 /**
  * @internal
  */
@@ -19,10 +21,12 @@ class ApiClient
 {
     private ClientInterface $client;
     private RemoteConfigApiExceptionConverter $errorHandler;
+    private string $baseUri;
 
-    public function __construct(ClientInterface $client)
+    public function __construct(string $projectId, ClientInterface $client)
     {
         $this->client = $client;
+        $this->baseUri = "https://firebaseremoteconfig.googleapis.com/v1/projects/{$projectId}/remoteConfig";
         $this->errorHandler = new RemoteConfigApiExceptionConverter();
     }
 
@@ -72,20 +76,20 @@ class ApiClient
      */
     public function listVersions(FindVersions $query, ?string $nextPageToken = null): ResponseInterface
     {
-        $uri = \rtrim((string) $this->client->getConfig('base_uri'), '/').':listVersions';
+        $uri = $this->baseUri.':listVersions';
 
         $since = $query->since();
         $until = $query->until();
         $lastVersionNumber = $query->lastVersionNumber();
         $pageSize = $query->pageSize();
 
-        $since = $since !== null ? $since->format('Y-m-d\TH:i:s.v\Z') : null;
-        $until = $until !== null ? $until->format('Y-m-d\TH:i:s.v\Z') : null;
+        $since = $since?->format('Y-m-d\TH:i:s.v\Z');
+        $until = $until?->format('Y-m-d\TH:i:s.v\Z');
         $lastVersionNumber = $lastVersionNumber !== null ? (string) $lastVersionNumber : null;
         $pageSize = $pageSize ? (string) $pageSize : null;
 
         return $this->requestApi('GET', $uri, [
-            'query' => \array_filter([
+            'query' => array_filter([
                 'startTime' => $since,
                 'endTime' => $until,
                 'endVersionNumber' => $lastVersionNumber,
@@ -100,7 +104,7 @@ class ApiClient
      */
     public function rollbackToVersion(VersionNumber $versionNumber): ResponseInterface
     {
-        $uri = \rtrim((string) $this->client->getConfig('base_uri'), '/').':rollback';
+        $uri = $this->baseUri.':rollback';
 
         return $this->requestApi('POST', $uri, [
             'json' => [

@@ -14,21 +14,17 @@ final class FetchGooglePublicKeys
         'https://www.googleapis.com/oauth2/v1/certs',
         'https://www.googleapis.com/identitytoolkit/v3/relyingparty/publicKeys',
     ];
-
     public const DEFAULT_FALLBACK_CACHE_DURATION = 'PT1H';
 
     /** @var array<int, string> */
-    private array $urls;
-
-    private Duration $fallbackCacheDuration;
+    private readonly array $urls;
 
     /**
      * @param array<array-key, string> $urls
      */
-    private function __construct(array $urls, Duration $fallbackCacheDuration)
+    private function __construct(array $urls, private Duration $fallbackCacheDuration)
     {
-        $this->urls = \array_values($urls);
-        $this->fallbackCacheDuration = $fallbackCacheDuration;
+        $this->urls = array_values($urls);
     }
 
     public static function fromGoogle(): self
@@ -47,10 +43,8 @@ final class FetchGooglePublicKeys
     /**
      * A response from the Google APIs should have a cache control header that determines when the keys expire.
      * If it doesn't have one, fall back to this value.
-     *
-     * @param Duration|DateInterval|string|int $duration
      */
-    public function ifKeysDoNotExpireCacheFor($duration): self
+    public function ifKeysDoNotExpireCacheFor(Duration|DateInterval|string|int $duration): self
     {
         $duration = Duration::make($duration);
 

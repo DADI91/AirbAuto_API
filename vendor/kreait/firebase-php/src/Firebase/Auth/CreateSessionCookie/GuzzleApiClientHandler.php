@@ -9,20 +9,28 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Utils;
+use InvalidArgumentException;
 use Kreait\Firebase\Auth\CreateSessionCookie;
 use Kreait\Firebase\Auth\ProjectAwareAuthResourceUrlBuilder;
 use Kreait\Firebase\Auth\TenantAwareAuthResourceUrlBuilder;
 use Psr\Http\Message\RequestInterface;
 
+use const JSON_FORCE_OBJECT;
+
+use function array_filter;
+
+/**
+ * @internal
+ */
 final class GuzzleApiClientHandler implements Handler
 {
-    private ClientInterface $client;
-    private string $projectId;
-
-    public function __construct(ClientInterface $client, string $projectId)
-    {
-        $this->client = $client;
-        $this->projectId = $projectId;
+    /**
+     * @param non-empty-string $projectId
+     */
+    public function __construct(
+        private readonly ClientInterface $client,
+        private readonly string $projectId,
+    ) {
     }
 
     public function handle(CreateSessionCookie $action): string
@@ -42,7 +50,7 @@ final class GuzzleApiClientHandler implements Handler
         try {
             /** @var array{sessionCookie?: string|null} $data */
             $data = Json::decode((string) $response->getBody(), true);
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             throw new FailedToCreateSessionCookie($action, $response, 'Unable to parse the response data: '.$e->getMessage(), 0, $e);
         }
 
@@ -72,7 +80,7 @@ final class GuzzleApiClientHandler implements Handler
 
         $body = Utils::streamFor(Json::encode($data, JSON_FORCE_OBJECT));
 
-        $headers = \array_filter([
+        $headers = array_filter([
             'Content-Type' => 'application/json; charset=UTF-8',
             'Content-Length' => (string) $body->getSize(),
         ]);

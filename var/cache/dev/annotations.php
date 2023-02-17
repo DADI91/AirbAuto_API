@@ -54,6 +54,18 @@ return [[
 '[C]Symfony%5CBundle%5CFrameworkBundle%5CController%5CAbstractController%23addLink' => 1,
 'Symfony%5CBundle%5CFrameworkBundle%5CController%5CAbstractController%24container' => 0,
 '[C]Symfony%5CBundle%5CFrameworkBundle%5CController%5CAbstractController%24container' => 1,
+'App%5CController%5CFirebaseAuthController' => 0,
+'[C]App%5CController%5CFirebaseAuthController' => 1,
+'App%5CController%5CFirebaseAuthController%23__construct' => 0,
+'[C]App%5CController%5CFirebaseAuthController%23__construct' => 1,
+'App%5CController%5CFirebaseAuthController%23register' => 2,
+'[C]App%5CController%5CFirebaseAuthController%23register' => 1,
+'App%5CController%5CFirebaseAuthController%23createUserInFirestore' => 0,
+'[C]App%5CController%5CFirebaseAuthController%23createUserInFirestore' => 1,
+'App%5CController%5CFirebaseAuthController%23login' => 3,
+'[C]App%5CController%5CFirebaseAuthController%23login' => 1,
+'App%5CController%5CFirebaseAuthController%24firebaseService' => 0,
+'[C]App%5CController%5CFirebaseAuthController%24firebaseService' => 1,
 'App%5CController%5CHelloController' => 0,
 '[C]App%5CController%5CHelloController' => 1,
 'App%5CController%5CHelloController%23hello' => 0,
@@ -606,6 +618,108 @@ return [[
 ], [
 
 0 => [],
-1 => 1673534856,
+1 => 1676545012,
+2 => static function () {
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['Symfony\\Component\\Routing\\Annotation\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Annotation\\Route')),
+        ],
+        null,
+        [
+            'Symfony\\Component\\Routing\\Annotation\\Route' => [
+                'path' => [
+                    '/singup',
+                ],
+                'methods' => [
+                    [
+                        'POST',
+                    ],
+                ],
+                'schemes' => [
+                    [],
+                ],
+                'name' => [
+                    null,
+                ],
+                'requirements' => [
+                    [],
+                ],
+                'options' => [
+                    [],
+                ],
+                'defaults' => [
+                    [],
+                ],
+                'host' => [
+                    null,
+                ],
+                'condition' => [
+                    null,
+                ],
+                'priority' => [
+                    null,
+                ],
+                'env' => [
+                    null,
+                ],
+            ],
+        ],
+        [
+            $o[0],
+        ],
+        []
+    );
+},
+3 => static function () {
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['Symfony\\Component\\Routing\\Annotation\\Route'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Routing\\Annotation\\Route')),
+        ],
+        null,
+        [
+            'Symfony\\Component\\Routing\\Annotation\\Route' => [
+                'path' => [
+                    '/login',
+                ],
+                'methods' => [
+                    [
+                        'POST',
+                    ],
+                ],
+                'schemes' => [
+                    [],
+                ],
+                'name' => [
+                    null,
+                ],
+                'requirements' => [
+                    [],
+                ],
+                'options' => [
+                    [],
+                ],
+                'defaults' => [
+                    [],
+                ],
+                'host' => [
+                    null,
+                ],
+                'condition' => [
+                    null,
+                ],
+                'priority' => [
+                    null,
+                ],
+                'env' => [
+                    null,
+                ],
+            ],
+        ],
+        [
+            $o[0],
+        ],
+        []
+    );
+},
 
 ]];

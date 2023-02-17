@@ -18,13 +18,10 @@ use Psr\Cache\CacheItemPoolInterface;
 
 final class IdTokenVerifier
 {
-    private Handler $handler;
-
     private ?string $expectedTenantId = null;
 
-    public function __construct(Handler $handler)
+    public function __construct(private readonly Handler $handler)
     {
-        $this->handler = $handler;
     }
 
     public static function createWithProjectId(string $projectId): self
@@ -77,8 +74,8 @@ final class IdTokenVerifier
     }
 
     /**
-     * @throws InvalidArgumentException on invalid leeway
      * @throws IdTokenVerificationFailed
+     * @throws InvalidArgumentException on invalid leeway
      */
     public function verifyIdTokenWithLeeway(string $token, int $leewayInSeconds): Token
     {

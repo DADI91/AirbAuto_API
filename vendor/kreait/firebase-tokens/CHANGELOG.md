@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 4.0.0 - 2022-11-26
+
+The most notable change is that you need PHP 8.1/8.2 to use the new version. The language migration to
+PHP 8.1 introduces potentially breaking changes concerning the strictness of parameter types - 
+however, this should not affect your project in most cases (unless you have used internal classes 
+directly or by extension).
+
+Please see [UPGRADE-4.0.md](UPGRADE-4.0.md) for detailed information.
+
 ## 3.0.3 - 2022-08-22
 
 * Ensured (PHPStan) compatibility with `lcobucci/jwt` ^4.2

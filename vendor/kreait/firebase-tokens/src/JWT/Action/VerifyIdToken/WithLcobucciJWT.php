@@ -28,25 +28,24 @@ use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Lcobucci\JWT\Validation\ConstraintViolation;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use Lcobucci\JWT\Validation\Validator;
-use StellaMaris\Clock\ClockInterface;
+use Psr\Clock\ClockInterface;
 use Throwable;
+
+use function assert;
+use function is_string;
 
 /**
  * @internal
  */
 final class WithLcobucciJWT implements Handler
 {
-    private string $projectId;
-    private Keys $keys;
-    private ClockInterface $clock;
-    private Parser $parser;
+    private readonly ClockInterface $clock;
+    private readonly Parser $parser;
     private Signer $signer;
-    private Validator $validator;
+    private readonly Validator $validator;
 
-    public function __construct(string $projectId, Keys $keys, ClockInterface $clock)
+    public function __construct(private readonly string $projectId, private readonly Keys $keys, ClockInterface $clock)
     {
-        $this->projectId = $projectId;
-        $this->keys = $keys;
         $this->clock = $clock;
         $this->parser = new Parser(new JoseEncoder());
 
@@ -65,7 +64,7 @@ final class WithLcobucciJWT implements Handler
 
         try {
             $token = $this->parser->parse($tokenString);
-            \assert($token instanceof UnencryptedToken);
+            assert($token instanceof UnencryptedToken);
         } catch (Throwable $e) {
             throw IdTokenVerificationFailed::withTokenAndReasons($tokenString, ['The token is invalid', $e->getMessage()]);
         }
@@ -94,9 +93,9 @@ final class WithLcobucciJWT implements Handler
                 $this->assertTenantId($token, $tenantId);
             }
         } catch (RequiredConstraintsViolated $e) {
-            $errors = \array_map(
+            $errors = array_map(
                 static fn (ConstraintViolation $violation): string => '- '.$violation->getMessage(),
-                $e->violations()
+                $e->violations(),
             );
         }
 
@@ -114,6 +113,7 @@ final class WithLcobucciJWT implements Handler
         unset($claim);
 
         $headers = $token->headers()->all();
+
         foreach ($headers as &$header) {
             if ($header instanceof DateTimeInterface) {
                 $header = $header->getTimestamp();
@@ -150,17 +150,17 @@ final class WithLcobucciJWT implements Handler
 
         if (!$authTime) {
             throw RequiredConstraintsViolated::fromViolations(
-                new ConstraintViolation('The token is missing the "auth_time" claim.')
+                new ConstraintViolation('The token is missing the "auth_time" claim.'),
             );
         }
 
-        if (\is_numeric($authTime)) {
+        if (is_numeric($authTime)) {
             $authTime = new DateTimeImmutable('@'.((int) $authTime));
         }
 
         if ($now < $authTime) {
             throw RequiredConstraintsViolated::fromViolations(
-                new ConstraintViolation("The token's user must have authenticated in the past")
+                new ConstraintViolation("The token's user must have authenticated in the past"),
             );
         }
     }
@@ -171,15 +171,15 @@ final class WithLcobucciJWT implements Handler
 
         $tenant = $claim['tenant'] ?? null;
 
-        if (!\is_string($tenant)) {
+        if (!is_string($tenant)) {
             throw RequiredConstraintsViolated::fromViolations(
-                new ConstraintViolation('The ID token does not contain a tenant identifier')
+                new ConstraintViolation('The ID token does not contain a tenant identifier'),
             );
         }
 
         if ($tenant !== $tenantId) {
             throw RequiredConstraintsViolated::fromViolations(
-                new ConstraintViolation("The token's tenant ID did not match with the expected tenant ID")
+                new ConstraintViolation("The token's tenant ID did not match with the expected tenant ID"),
             );
         }
     }

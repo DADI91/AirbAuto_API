@@ -15,15 +15,22 @@ use Kreait\Firebase\Auth\ProjectAwareAuthResourceUrlBuilder;
 use Kreait\Firebase\Auth\TenantAwareAuthResourceUrlBuilder;
 use Psr\Http\Message\RequestInterface;
 
+use const JSON_FORCE_OBJECT;
+
+use function array_filter;
+
+/**
+ * @internal
+ */
 final class GuzzleApiClientHandler implements Handler
 {
-    private ClientInterface $client;
-    private string $projectId;
-
-    public function __construct(ClientInterface $client, string $projectId)
-    {
-        $this->client = $client;
-        $this->projectId = $projectId;
+    /**
+     * @param non-empty-string $projectId
+     */
+    public function __construct(
+        private readonly ClientInterface $client,
+        private readonly string $projectId,
+    ) {
     }
 
     public function handle(CreateActionLink $action): string
@@ -55,7 +62,7 @@ final class GuzzleApiClientHandler implements Handler
 
     private function createRequest(CreateActionLink $action): RequestInterface
     {
-        $data = \array_filter([
+        $data = array_filter([
             'requestType' => $action->type(),
             'email' => $action->email(),
             'returnOobLink' => true,
@@ -71,7 +78,7 @@ final class GuzzleApiClientHandler implements Handler
 
         $body = Utils::streamFor(Json::encode($data, JSON_FORCE_OBJECT));
 
-        $headers = \array_filter([
+        $headers = array_filter([
             'Content-Type' => 'application/json; charset=UTF-8',
             'Content-Length' => (string) $body->getSize(),
             'X-Firebase-Locale' => $action->locale(),

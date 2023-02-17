@@ -7,6 +7,9 @@ namespace Kreait\Firebase\Auth;
 use Beste\Json;
 use Psr\Http\Message\ResponseInterface;
 
+use function count;
+use function is_countable;
+
 final class DeleteUsersResult
 {
     private int $failureCount;
@@ -35,13 +38,16 @@ final class DeleteUsersResult
         $this->rawErrors = $rawErrors;
     }
 
+    /**
+     * @internal
+     */
     public static function fromRequestAndResponse(DeleteUsersRequest $request, ResponseInterface $response): self
     {
         $data = Json::decode((string) $response->getBody(), true);
         $errors = $data['errors'] ?? [];
 
-        $failureCount = \count($errors);
-        $successCount = \count($request->uids()) - $failureCount;
+        $failureCount = is_countable($errors) ? count($errors) : 0;
+        $successCount = count($request->uids()) - $failureCount;
 
         return new self($successCount, $failureCount, $errors);
     }
