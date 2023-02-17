@@ -18,5 +18,7 @@ return [
     '_profiler_exception_css' => [['token'], ['_controller' => 'web_profiler.controller.exception_panel::stylesheet'], [], [['text', '/exception.css'], ['variable', '/', '[^/]++', 'token', true], ['text', '/_profiler']], [], [], []],
     'hello' => [[], ['_controller' => 'App\\Controller\\HelloController::hello'], [], [['text', '/hello']], [], [], []],
     'app_firebaseauth_register' => [[], ['_controller' => 'App\\Controller\\FirebaseAuthController::register'], [], [['text', '/api/singup']], [], [], []],
+    'app_firebaseauth_getuserbyid' => [['id'], ['_controller' => 'App\\Controller\\FirebaseAuthController::getUserById'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/user']], [], [], []],
+    'app_firebaseauth_updateuserbyid' => [['id'], ['_controller' => 'App\\Controller\\FirebaseAuthController::updateUserById'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/user']], [], [], []],
     'app_firebaseauth_login' => [[], ['_controller' => 'App\\Controller\\FirebaseAuthController::login'], [], [['text', '/api/login']], [], [], []],
 ];

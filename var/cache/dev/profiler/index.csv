@@ -39,3 +39,16 @@ f68369,::1,POST,http://localhost:8000/api/singup,1676560456,,500
 21392b,::1,GET,http://localhost:8000/api/singup,1676560481,896edc,500
 896edc,::1,POST,http://localhost:8000/api/singup,1676560481,,500
 b2a577,::1,POST,http://localhost:8000/api/singup,1676560497,,200
+b32375,::1,POST,http://localhost:8000/api/singup,1676639064,,200
+f04baa,::1,GET,http://localhost:8000/api/singup,1676639316,ee9d47,500
+ee9d47,::1,POST,http://localhost:8000/api/singup,1676639316,,500
+ccb838,::1,GET,http://localhost:8000/api/singup,1676639376,3f67d2,500
+3f67d2,::1,POST,http://localhost:8000/api/singup,1676639376,,500
+6a20e2,::1,GET,http://localhost:8000/api/singup,1676639388,8b4d1f,500
+8b4d1f,::1,POST,http://localhost:8000/api/singup,1676639388,,500
+f6c1ce,::1,POST,http://localhost:8000/api/singup,1676639414,,200
+a9d116,::1,POST,http://localhost:8000/api/login,1676645525,,200
+71f54b,::1,GET,http://localhost:8000/api/user/oVcUiNo1IiaIAC9OmnMC9aM5vBX2,1676647334,93c2c2,405
+93c2c2,::1,POST,http://localhost:8000/api/user/oVcUiNo1IiaIAC9OmnMC9aM5vBX2,1676647334,,405
+d61e36,::1,GET,http://localhost:8000/api/user/oVcUiNo1IiaIAC9OmnMC9aM5vBX2,1676647347,,200
+4fac13,::1,PUT,http://localhost:8000/api/user/oVcUiNo1IiaIAC9OmnMC9aM5vBX2,1676647779,,200

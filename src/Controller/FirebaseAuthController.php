@@ -33,11 +33,10 @@ class FirebaseAuthController extends AbstractController
                 'emailVerified' => false,
                 'disabled' => false,
             ]);
-            
-            $collectionReference = $firestore->collection("test");
-            $collectionReference->add([
+            $uid = $user->uid;
+            $collectionReference = $firestore->collection("Users");
+            $collectionReference->document($uid)->set([
                 'email' => $data['email'],
-                'password' => $data['password'],
                 'nom' => $data['nom'],
                 'prenom' => $data['prenom'],
                 'date_naissance' => $data['date_naissance'],
@@ -50,10 +49,46 @@ class FirebaseAuthController extends AbstractController
         }
     }
 
-    public function createUserInFirestore($data)
+    /**
+     * @Route("/user/{id}", methods={"GET"})
+     */
+    public function getUserById($id)
     {
-        
+        $firestore = $this->firebaseService->getFirestore();
+        $userDocument = $firestore->collection('Users')->document($id);
+        $user = $userDocument->snapshot()->data();
+        if ($user) {
+            return new JsonResponse(['message' => 'success', 'user' => $user]);
+        } else {
+            return new JsonResponse(['error' => 'User not found'], 404);
+        }
     }
+
+    /**
+     * @Route("/user/{id}", methods={"PUT"})
+     */
+    public function updateUserById(Request $request, $id)
+    {
+        $data = json_decode($request->getContent(), true);
+        $firestore = $this->firebaseService->getFirestore();
+        $userDocument = $firestore->collection('Users')->document($id);
+        $user = $userDocument->snapshot()->data();
+        if ($user) {
+            $userDocument->update([
+                ['path' => 'email', 'value' => $data['email'] ?? $user['email']],
+                ['path' => 'nom', 'value' => $data['nom'] ?? $user['nom']],
+                ['path' => 'prenom', 'value' => $data['prenom'] ?? $user['prenom']],
+                ['path' => 'date_naissance', 'value' => $data['date_naissance'] ?? $user['date_naissance']],
+                ['path' => 'img_profil', 'value' => $data['img_profil'] ?? $user['img_profil']],
+            ]);
+            $updatedUser = $userDocument->snapshot()->data();
+            return new JsonResponse(['message' => 'success', 'user' => $updatedUser]);
+        } else {
+            return new JsonResponse(['error' => 'User not found'], 404);
+        }
+    }
+
+
 
 
     
