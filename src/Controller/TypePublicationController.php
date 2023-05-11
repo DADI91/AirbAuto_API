@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Kreait\Firebase\Storage;
 
-class TypePublication extends AbstractController
+class TypePublicationController extends AbstractController
 {
     private $firebaseService;
 
