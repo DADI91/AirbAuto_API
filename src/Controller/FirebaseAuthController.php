@@ -37,6 +37,8 @@ class FirebaseAuthController extends AbstractController
             $collectionReference = $firestore->collection("Users");
             $collectionReference->document($uid)->set([
                 'email' => $data['email'],
+                'pseudo' => $data['pseudo'],
+                'numeroPortable' => $data['numeroPortable'],
                 'nom' => $data['nom'],
                 'prenom' => $data['prenom'],
                 'date_naissance' => $data['date_naissance'],
@@ -76,6 +78,8 @@ class FirebaseAuthController extends AbstractController
         if ($user) {
             $userDocument->update([
                 ['path' => 'email', 'value' => $data['email'] ?? $user['email']],
+                ['path' => 'pseudo', 'value' => $data['pseudo'] ?? $user['pseudo']],
+                ['path' => 'numeroPortable', 'value' => $data['numeroPortable'] ?? $user['numeroPortable']],
                 ['path' => 'nom', 'value' => $data['nom'] ?? $user['nom']],
                 ['path' => 'prenom', 'value' => $data['prenom'] ?? $user['prenom']],
                 ['path' => 'date_naissance', 'value' => $data['date_naissance'] ?? $user['date_naissance']],

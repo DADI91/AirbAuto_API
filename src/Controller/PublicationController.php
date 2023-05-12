@@ -44,6 +44,9 @@ class PublicationController extends AbstractController
             "img_Publication2" => $data["img_Publication2"] ?? "",
             "img_Publication3" => $data["img_Publication3"] ?? "",
             "Marque_Vehicule" => $data["Marque_Vehicule"] ?? "",
+            "Kilometre" => $data["Kilometre"] ?? "",
+            "Année" => $data["Année"] ?? "",
+            "Ville" => $data["Ville"] ?? "",
             "Date_Immatriculation" => $data["Date_Immatriculation"] ?? "",
             "Note_Publication" => $data["Note_Publication"] ?? "",
             "Etat_Publication" => $data["Etat_Publication"] ?? "",
@@ -53,7 +56,8 @@ class PublicationController extends AbstractController
 
         $newDocument = $userReference->add($documentData);
 
-    
+        $newDocument->update([['path' => 'ID_Publication', 'value' => $newDocument->id()]]);
+
        
         return new JsonResponse(["message" => "Publication créé avec succès pour l'utilisateur", "userId" => $userId, "documentId" => $newDocument->id()]);
     }
@@ -62,7 +66,7 @@ class PublicationController extends AbstractController
 
 
     /**
-     * @Route("publications/{userId}", methods={"GET"})
+     * @Route("publications_user/{userId}", methods={"GET"})
      */
     public function getAllPublicationsByUserId($userId)
     {
@@ -189,8 +193,10 @@ class PublicationController extends AbstractController
             "Description_Publication",
             "Marque_Vehicule",
             "Date_Immatriculation",
-            "Note_Publication",
             "Etat_Publication",
+            "Kilometre",
+            "Année",
+            "Ville",
         ];
 
         foreach ($fields as $field) {
@@ -234,6 +240,55 @@ class PublicationController extends AbstractController
             "documentId" => $documentId
         ]);
     }
+
+    /**
+     * @Route("publication_note/{userId}/{documentId}", methods={"PUT"})
+     */
+    public function updateNotePublication(Request $request, $userId, $documentId)
+    {
+        // Récupérer les données de la publication à partir de la requête
+        $data = json_decode($request->getContent(), true);
+    
+        // Vérifier si la nouvelle note est fournie
+        if (!isset($data['Note_Publication'])) {
+            return new JsonResponse(['message' => 'La nouvelle note n\'est pas fournie.'], 400);
+        }
+    
+        // Récupérer les références aux services Firestore
+        $firestore = $this->firebaseService->getFirestore();
+    
+        // Récupérer la référence à la collection "Publication" de Firestore
+        $userReference = $firestore->collection("Publication")->document($documentId);
+    
+        // Récupérer les données actuelles de la publication
+        $publicationData = $userReference->snapshot()->data();
+    
+        // Ajouter la nouvelle note à la liste des notes
+        $notes = $publicationData['Notes'] ?? [];
+        $notes[] = $data['Note_Publication'];
+    
+        // Calculer la nouvelle moyenne
+        $totalNotes = array_sum($notes);
+        $countNotes = count($notes);
+        $newAverageNote = $totalNotes / $countNotes;
+    
+        // Effectuer les mises à jour
+        $userReference->update([
+            ['path' => 'Notes', 'value' => $notes],
+            ['path' => 'Note_Publication', 'value' => $newAverageNote]
+        ]);
+    
+        // Retourner un objet JSON contenant un message de succès
+        return new JsonResponse([
+            "message" => "Note de la publication mise à jour avec succès",
+            "userId" => $userId,
+            "documentId" => $documentId,
+            "newNote" => $newAverageNote
+        ]);
+    }
+
+
+
 
 
 

@@ -36,7 +36,6 @@ class DocumentController extends AbstractController
 
         // Récupérer la référence à la collection "documents" de Firestore
 
-        $collectionReference = $firestore->collection("documents");
         $userReference = $firestore->collection("Users")->document($userId);
 
 

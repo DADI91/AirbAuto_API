@@ -37,6 +37,8 @@ class ReservationController extends AbstractController
 
         $documentData = [
             "message_reservation" => $data["message_reservation"],
+            "date_debut" => $data["date_debut"],
+            "date_fin" => $data["date_fin"],
             "statut_reservation" => "En cours",
             "id_Publication" => $publicationId,
             "id_user_reservation" => $userId,
@@ -44,7 +46,8 @@ class ReservationController extends AbstractController
 
         $newDocument = $userReference->add($documentData);
 
-    
+        $newDocument->update([['path' => 'ID_Reservation', 'value' => $newDocument->id()]]);
+
        
         return new JsonResponse([
             "message" => "Reservation éffecuté avec succès pour l'utilisateur", 
@@ -148,6 +151,12 @@ class ReservationController extends AbstractController
         $updates = [];
         if (isset($data["message_reservation"])) {
             $updates[] = ["path" => "message_reservation", "value" => $data["message_reservation"]];
+        }
+        if (isset($data["date_debut"])) {
+            $updates[] = ["path" => "date_debut", "value" => $data["date_debut"]];
+        }
+        if (isset($data["date_fin"])) {
+            $updates[] = ["path" => "date_fin", "value" => $data["date_fin"]];
         }
         if (isset($data["statut_reservation"])) {
             $updates[] = ["path" => "statut_reservation", "value" => $data["statut_reservation"]];
