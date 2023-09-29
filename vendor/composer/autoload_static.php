@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit6e68b94803d74696fe6a562edd0fd7e3
+class ComposerStaticInitcef8d15a30e165b23fed6c4293d6790c
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -817,6 +817,7 @@ class ComposerStaticInit6e68b94803d74696fe6a562edd0fd7e3
     );
 
     public static $classMap = array (
+        'App\\Controller\\DocumentController' => __DIR__ . '/../..' . '/src/Controller/DocumentController.php',
         'App\\Controller\\FirebaseAuthController' => __DIR__ . '/../..' . '/src/Controller/FirebaseAuthController.php',
         'App\\Controller\\HelloController' => __DIR__ . '/../..' . '/src/Controller/HelloController.php',
         'App\\Kernel' => __DIR__ . '/../..' . '/src/Kernel.php',
@@ -8352,9 +8353,9 @@ class ComposerStaticInit6e68b94803d74696fe6a562edd0fd7e3
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit6e68b94803d74696fe6a562edd0fd7e3::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit6e68b94803d74696fe6a562edd0fd7e3::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit6e68b94803d74696fe6a562edd0fd7e3::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitcef8d15a30e165b23fed6c4293d6790c::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitcef8d15a30e165b23fed6c4293d6790c::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitcef8d15a30e165b23fed6c4293d6790c::$classMap;
 
         }, null, ClassLoader::class);
     }

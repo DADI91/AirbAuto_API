@@ -44,12 +44,15 @@ class PublicationController extends AbstractController
             "img_Publication2" => $data["img_Publication2"] ?? "",
             "img_Publication3" => $data["img_Publication3"] ?? "",
             "Marque_Vehicule" => $data["Marque_Vehicule"] ?? "",
-            "Kilometre" => $data["Kilometre"] ?? "",
-            "Année" => $data["Année"] ?? "",
-            "Ville" => $data["Ville"] ?? "",
+            "Prix" => $data["Prix"] ?? "",
             "Date_Immatriculation" => $data["Date_Immatriculation"] ?? "",
             "Note_Publication" => $data["Note_Publication"] ?? "",
+            "Carburant" => $data["Carburant"] ?? "",
+            "kilometre" => $data["kilometre"] ?? "0",
+            "Departement" => $data["Departement"] ?? "",
             "Etat_Publication" => $data["Etat_Publication"] ?? "",
+            "Ville" => $data["Ville"],
+            "Date_Publication" => $data["Date_Publication"],
             "ID_Type_Publication" => $data["ID_Type_Publication"],
             "Id_User" => $userId,
         ];
@@ -193,9 +196,11 @@ class PublicationController extends AbstractController
             "Description_Publication",
             "Marque_Vehicule",
             "Date_Immatriculation",
+            "Prix",
             "Etat_Publication",
-            "Kilometre",
-            "Année",
+            "Carburant",
+            "Km",
+            "Departement",
             "Ville",
         ];
 
@@ -242,9 +247,9 @@ class PublicationController extends AbstractController
     }
 
     /**
-     * @Route("publication_note/{userId}/{documentId}", methods={"PUT"})
+     * @Route("publication_note/{userId}/{documentId}/{reservationId}", methods={"PUT"})
      */
-    public function updateNotePublication(Request $request, $userId, $documentId)
+    public function updateNotePublication(Request $request, $userId, $documentId, $reservationId )
     {
         // Récupérer les données de la publication à partir de la requête
         $data = json_decode($request->getContent(), true);
@@ -259,12 +264,14 @@ class PublicationController extends AbstractController
     
         // Récupérer la référence à la collection "Publication" de Firestore
         $userReference = $firestore->collection("Publication")->document($documentId);
-    
+        $ReservationReference = $firestore->collection("Reservation")->document($reservationId);
+
         // Récupérer les données actuelles de la publication
         $publicationData = $userReference->snapshot()->data();
-    
         // Ajouter la nouvelle note à la liste des notes
         $notes = $publicationData['Notes'] ?? [];
+        $notes = $ReservationData['Notes'] ?? [];
+
         $notes[] = $data['Note_Publication'];
     
         // Calculer la nouvelle moyenne
@@ -273,6 +280,9 @@ class PublicationController extends AbstractController
         $newAverageNote = $totalNotes / $countNotes;
     
         // Effectuer les mises à jour
+        $ReservationReference->update([
+            ['path' => 'Note', 'value' => true],
+        ]);
         $userReference->update([
             ['path' => 'Notes', 'value' => $notes],
             ['path' => 'Note_Publication', 'value' => $newAverageNote]

@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'c359570cf61a507d9b51f2248fff1deb04da165f',
+        'reference' => '2629943c791f0f5db122329785238360a0476973',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'c359570cf61a507d9b51f2248fff1deb04da165f',
+            'reference' => '2629943c791f0f5db122329785238360a0476973',
             'dev_requirement' => false,
         ),
         'beste/clock' => array(

@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Controller\\DocumentController' => $baseDir . '/src/Controller/DocumentController.php',
     'App\\Controller\\FirebaseAuthController' => $baseDir . '/src/Controller/FirebaseAuthController.php',
     'App\\Controller\\HelloController' => $baseDir . '/src/Controller/HelloController.php',
     'App\\Kernel' => $baseDir . '/src/Kernel.php',
