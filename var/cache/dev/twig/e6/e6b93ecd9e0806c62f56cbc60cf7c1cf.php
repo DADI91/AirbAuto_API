@@ -898,6 +898,6 @@ class __TwigTemplate_f6e08d8321a2c6995802e97bf99026c3 extends Template
         </tbody>
     </table>
 {% endmacro %}
-", "@WebProfiler/Collector/translation.html.twig", "/Users/walid/Desktop/Airb_Auto_Project/AirbAuto_API/vendor/symfony/web-profiler-bundle/Resources/views/Collector/translation.html.twig");
+", "@WebProfiler/Collector/translation.html.twig", "/Users/walid/Documents/GitHub/AirbAuto_API/vendor/symfony/web-profiler-bundle/Resources/views/Collector/translation.html.twig");
     }
 }

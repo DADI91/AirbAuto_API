@@ -482,6 +482,6 @@ class __TwigTemplate_771ca56e47a616b6e2f5069271ecc957 extends Template
         {% endfor %}
     </table>
 {% endmacro %}
-", "@WebProfiler/Collector/events.html.twig", "/Users/walid/Desktop/Airb_Auto_Project/AirbAuto_API/vendor/symfony/web-profiler-bundle/Resources/views/Collector/events.html.twig");
+", "@WebProfiler/Collector/events.html.twig", "/Users/walid/Documents/GitHub/AirbAuto_API/vendor/symfony/web-profiler-bundle/Resources/views/Collector/events.html.twig");
     }
 }

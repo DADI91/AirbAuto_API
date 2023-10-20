@@ -227,6 +227,6 @@ class __TwigTemplate_0ccaae5c8c0da6a06b09d4db1dace5da extends Template
         </div>
     {% endif %}
 {% endblock %}
-", "@WebProfiler/Collector/exception.html.twig", "/Users/walid/Desktop/Airb_Auto_Project/AirbAuto_API/vendor/symfony/web-profiler-bundle/Resources/views/Collector/exception.html.twig");
+", "@WebProfiler/Collector/exception.html.twig", "/Users/walid/Documents/GitHub/AirbAuto_API/vendor/symfony/web-profiler-bundle/Resources/views/Collector/exception.html.twig");
     }
 }

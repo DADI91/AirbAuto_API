@@ -168,6 +168,6 @@ class __TwigTemplate_7f64992a8ddeccb0e497d71ce88d5635 extends Template
 
     {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: false }) }}
 {% endblock %}
-", "@WebProfiler/Collector/ajax.html.twig", "/Users/walid/Desktop/Airb_Auto_Project/AirbAuto_API/vendor/symfony/web-profiler-bundle/Resources/views/Collector/ajax.html.twig");
+", "@WebProfiler/Collector/ajax.html.twig", "/Users/walid/Documents/GitHub/AirbAuto_API/vendor/symfony/web-profiler-bundle/Resources/views/Collector/ajax.html.twig");
     }
 }

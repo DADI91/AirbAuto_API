@@ -17,7 +17,7 @@ class FirebaseService
     private $storage;
 
     public function __construct(Factory $factory) {
-        $credentialsPath = realpath("/Users/walid/Desktop/Airb_Auto_Project/AirbAuto_API/config/firebase_credentials.json");
+        $credentialsPath = realpath("/Users/walid/Documents/GitHub/AirbAuto_API/config/firebase_credentials.json");
 
         $this->firebase = (new Factory)
             ->withServiceAccount($credentialsPath);
